@@ -10,7 +10,7 @@ var auth = jwt({
 var authFilter = (callBack) => {
   updatedFunction = (req , res) => {
     if(!req.user._id) 
-      return res.status(200);
+      return res.send(200);
     callBack(req, res);    
   }
   return updatedFunction;

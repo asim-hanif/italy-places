@@ -11,11 +11,11 @@ function addNewPlace(req, res) {
   place.address = address;
   place.telephoneNo = telephoneNo;
   place.type = type;
-  place.isFavourite = isFavourite;
+  place.isFavourite = false;
 
   place.save((err) => {
     if(!err)    
-        res.status(200);
+        res.send(200);
     else
         res.status(500);
   });
@@ -24,22 +24,16 @@ function addNewPlace(req, res) {
 
 function setIsFavourite(req, res) {
     let userId = req.user._id,
-        placeId = req.placeId,
-        isFavourite = req.isFavourite;
+        placeId = req.body.placeId,
+        isFavourite = req.body.isFavourite;
 
     let qry = { userId: userId, _id: placeId,};
 
-    Place.find(qry, (err, place) => {
-        if(err) return res.status(500);
-
-        place.isFavourite = isFavourite;
-  
-        place.save(function(err) {
-          if(!err)    
-              res.status(200);
-          else
-              res.status(500);
-        });
+    Place.update(qry, {$set: {isFavourite : isFavourite}} ,(err, place) => {
+        if(err) 
+            res.send(500);  
+        else
+            res.send(200);
     }); 
   
   };
@@ -49,7 +43,7 @@ function getAllPlaces(req, res) {
     let qry = {userId: userId};
     Place.find(qry, (err, allPlaces) => {
         if(err) 
-            res.status(500);
+            res.send(500);
         else
             res.status(200).json(allPlaces);
     });
@@ -60,7 +54,7 @@ function getAllFavouritePlaces(req, res) {
     let qry = {userId: userId, isFavourite: true};
     Place.find(qry, (err , favouritePlaces) => {
         if(err) 
-            res.status(500);
+            res.send(500);
         else
             res.status(200).json(favouritePlaces);
     });     

@@ -1,0 +1,25 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Register</h1>
+      <p class="lead">Already a member? Please <a routerLink="/login">log in</a> instead.</p>
+      <form (submit)="register()" [formGroup]="registerForm">
+        <div class="form-group" [ngClass]="{'has-error': isFieldNotValid(registerForm.get('name')) }">
+          <label for="name">Full name</label>
+          <input type="text" class="form-control" name="name" placeholder="Enter your name" formControlName="name">
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': isFieldNotValid(registerForm.get('email')) }">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" name="email" placeholder="Enter email"  formControlName="email">
+        </div>
+        <div class="form-group" [ngClass]="{'has-error': isFieldNotValid(registerForm.get('password')) }">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Password" formControlName="password">
+        </div>
+        <button type="submit" class="btn btn-default">Register!</button>
+      </form>
+      <span class="text-danger" *ngIf="errorMessage"><strong>{{errorMessage}}</strong></span>
+    </div>
+  </div>
+</div>
