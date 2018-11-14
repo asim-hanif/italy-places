@@ -13,9 +13,9 @@ function addNewPlace(req, res) {
   place.type = type;
   place.isFavourite = false;
 
-  place.save((err) => {
+  place.save((err, data) => {
     if(!err)    
-        res.send(200);
+        res.send(data);
     else
         res.status(500);
   });

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { TokenPayload } from '../services/utils.service';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   templateUrl: './register.component.html'
@@ -16,9 +17,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   errorMessage: string = '';
 
-  constructor(private userService: UserService, private router: Router) {}
-
-  ngOnInit() {
+  constructor(private userService: UserService, private router: Router, private authService: AuthenticationService) {
     this.registerForm = new FormGroup({
       'name': new FormControl(this.credentials.name, [
         Validators.required,
@@ -26,6 +25,11 @@ export class RegisterComponent implements OnInit {
       'email': new FormControl(this.credentials.email, [Validators.email, Validators.required]),
       'password': new FormControl(this.credentials.password, Validators.required)
     });
+  }
+
+  ngOnInit() {
+    if(this.authService.isLoggedIn())
+      this.router.navigateByUrl('/home');
   }
 
   isFieldNotValid(formControl: AbstractControl){

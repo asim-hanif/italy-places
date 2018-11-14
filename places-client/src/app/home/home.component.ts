@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import {GridOptions} from "ag-grid-community";
 import { PlaceService } from '../services/place.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import {Place} from '../models/place'
+import { FavouritComponent } from '../favourit/favourit.component';
 
 @Component({
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
 
-  public place: Place = new Place();
+  public place: Place = new Place();  
   public gridOptions: GridOptions;
-  public registerForm: FormGroup;
+  public addPlaceForm: FormGroup;
   public errorMessage: string = '';
 
 
@@ -20,12 +21,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.registerForm = new FormGroup({
-      'name': new FormControl(this.credentials.name, [
-        Validators.required,
-      ]),
-      'email': new FormControl(this.credentials.email, [Validators.email, Validators.required]),
-      'password': new FormControl(this.credentials.password, Validators.required)
+    this.addPlaceForm = new FormGroup({
+      'name': new FormControl(this.place.name, Validators.required),
+      'type': new FormControl(this.place.type, [Validators.required]),
+      'telephoneNo': new FormControl(this.place.telephoneNo, Validators.required),
+      'address': new FormControl(this.place.address, Validators.required)
     });
   }
 
@@ -33,54 +33,92 @@ export class HomeComponent implements OnInit {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = [
         {
-            headerName: "ID",
-            field: "id",
-            width: 100
+          headerName: "Sr.",
+          valueGetter: 'node.id',
         },
         {
-            headerName: "Value",
-            field: "value",
-            //cellRendererFramework: RedComponentComponent,            
-            width: 100
+            headerName: "Name",
+            field: "name",
+        },
+        {
+            headerName: "Type",
+            field: "type", 
+        },
+        {
+            headerName: "Address",
+            field: "address", 
+        },
+        {
+            headerName: "Telephone Number",
+            field: "telephoneNo",   
+        },
+        {
+            headerName: "Favourite",
+            field: "isFavourite",             
+            cellRenderer: "FavouritComponent", 
         },
 
+
     ];
-    this.gridOptions.rowData = this.rowData;
-    this.gridOptions.onGridReady = this.getAllPlaces.bind(this)
+    this.gridOptions.context = { homeComponent: this };
+    this.gridOptions.frameworkComponents = {
+      FavouritComponent: FavouritComponent,
+    };
+    this.gridOptions.onGridReady = this.onGridReady.bind(this); 
+  }
+
+  onGridReady() {
+    this.gridOptions.api.sizeColumnsToFit();
+    window.addEventListener("resize", this.onWindowResize.bind(this));
+    
+    this.getAllPlaces();
+  }
   
+  onWindowResize() {    
+      setTimeout(() => {
+        this.gridOptions.api.sizeColumnsToFit();
+      });
   }
 
-  get rowData() {
-    return [
-      {id: 5, value: 10},
-      {id: 10, value: 15},
-      {id: 15, value: 20}
-    ]
-  }
-  set rowData(data) {
-    this.rowData = data;
-  }
-
-  getAllPlaces(agGridParams) {
+  getAllPlaces() {
     this.placeService.getAllPlaces().subscribe((places) => {
-        agGridParams.api.setRowData(places);
-        //updates$.subscribe((updates) => agGridParams.api.updateRowData({update: updates}));
+      this.gridOptions.api.setRowData(places);
     })
   }
 
-  register() {
-    if(this.registerForm.valid) {
+  addPlace() {
+    if(this.addPlaceForm.valid) {
+
       this.errorMessage = '';
-      this.placeService.register(this.registerForm.value).subscribe(() => {
-        this.router.navigateByUrl('/home');
+      this.placeService.addPlace(this.addPlaceForm.value).subscribe((place) => {
+
+        this.addPlaceForm.reset();
+        this.gridOptions.api.updateRowData({add: [place]})
+
       }, (err: any) => {
+
         this.errorMessage = err.error.message;
       });
     }
     else{
-      for(var control in this.registerForm.controls){
-        this.registerForm.get(control).markAsDirty();
+      for(var control in this.addPlaceForm.controls){
+        this.addPlaceForm.get(control).markAsDirty();
       }
     }
+  }
+
+  isFieldNotValid(formControl: AbstractControl){
+    return (formControl.dirty || formControl.touched) && formControl.invalid;
+  }
+
+  markOrUnMarkPlaceAsFavourite(index, isFavourite) {
+    let rowNode = this.gridOptions.api.getRowNode(index);
+    let place: Place = rowNode.data;
+    place.isFavourite = isFavourite;
+    rowNode.setData(place);
+
+    this.placeService.setIsFavourite({placeId: place._id, isFavourite: isFavourite}).subscribe((place) => {
+    }, (err: any) => {      
+    });
   }
 }

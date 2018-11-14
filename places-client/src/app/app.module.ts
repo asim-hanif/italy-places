@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuardService } from './services/auth-guard.service';
+import { FavouritComponent } from './favourit/favourit.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
     AppComponent,    
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    FavouritComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +34,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([FavouritComponent]),
   ],
   providers: [
     AuthenticationService, 

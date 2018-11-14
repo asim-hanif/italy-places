@@ -1,4 +1,5 @@
 export class Place {
+  _id: string;
   userId: String;
   name: String;
   address: String;
