@@ -21,4 +21,8 @@ export class PlaceService {
   public setIsFavourite(data): Observable<any> {    
     return this.utilService.request('post', 'setIsFavourite', data);
   }
+
+  public searchPlaces(data): Observable<any> {    
+    return this.utilService.request('post', 'searchPlaces', data);
+  }
 }
