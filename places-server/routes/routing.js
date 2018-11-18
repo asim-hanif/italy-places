@@ -20,13 +20,14 @@ var placesController = require('../controllers/placesController');
 var authController = require('../controllers/userController');
 
 // place
-router.post('/addNewPlace', auth, authFilter(placesController.addNewPlace));
-router.post('/setIsFavourite', auth, authFilter(placesController.setIsFavourite));
-router.get('/getAllFavouritePlaces', auth, authFilter(placesController.getAllFavouritePlaces));
-router.get('/getAllPlaces', auth, authFilter(placesController.getAllPlaces));
+router.post('/place/addNewPlace', auth, authFilter(placesController.addNewPlace));
+router.post('/place/setIsFavourite', auth, authFilter(placesController.setIsFavourite));
+router.get('/place/getAllFavouritePlaces', auth, authFilter(placesController.getAllFavouritePlaces));
+router.get('/place/getAllPlaces', auth, authFilter(placesController.getAllPlaces));
+router.post('/place/searchPlaces', auth, authFilter(placesController.searchPlaces));
 
 // authentication
-router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/user/register', authController.register);
+router.post('/user/login', authController.login);
 
 module.exports = router;
