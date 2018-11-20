@@ -122,9 +122,30 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  search(searchText) {
-    this.placeService.searchPlaces({searchText: searchText}).subscribe((places) => {
+  search(searchInput) {
+    if(!searchInput.value) return;
+
+    this.placeService.searchPlaces({ searchText: searchInput.value }).subscribe((places) => {
       this.gridOptions.api.setRowData(places);
     })
+  }
+
+  showAllPlaces() {
+    var favouritePlacesFilter = this.gridOptions.api.getFilterInstance("isFavourite");
+    favouritePlacesFilter.setModel(null);
+    this.gridOptions.api.onFilterChanged();
+  }
+
+  showFavouritePlaces() {
+    var favouritePlacesFilter = this.gridOptions.api.getFilterInstance("isFavourite");
+    favouritePlacesFilter.setModel({
+      type: "equals",
+      filter: true,
+    });
+    this.gridOptions.api.onFilterChanged();
+  }
+  clearSearch(searchInput) {
+    if(!searchInput.value)
+      this.getAllPlaces();
   }
 }
