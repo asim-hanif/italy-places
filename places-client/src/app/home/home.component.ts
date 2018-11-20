@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
     window.addEventListener("resize", this.onWindowResize.bind(this));
 
-    this.getAllPlaces();
+    //his.getAllPlaces();
   }
 
   onWindowResize() {
