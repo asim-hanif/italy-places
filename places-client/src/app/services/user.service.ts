@@ -10,14 +10,10 @@ export class UserService {
   constructor(private utilService: UtilsService) { }
 
   public register(user: TokenPayload): Observable<any> {    
-    return this.utilService.request('post', 'register', user);
+    return this.utilService.request('post', 'user/register', user);
   }
 
   public login(user: TokenPayload): Observable<any> {
-    return this.utilService.request('post', 'login', user);
-  }
-
-  public profile(): Observable<any> {
-    return this.utilService.request('get', 'profile');
+    return this.utilService.request('post', 'user/login', user);
   }
 }
