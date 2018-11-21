@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GridOptions } from "ag-grid-community";
+import { GridOptions } from 'ag-grid-community';
 import { PlaceService } from '../services/place.service';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { Place } from '../models/place'
+import { Place } from '../models/place';
 import { FavouritComponent } from '../favourit/favourit.component';
 
 @Component({
@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   public place: Place = new Place();
   public gridOptions: GridOptions;
   public addPlaceForm: FormGroup;
-  public errorMessage: string = '';
+  public errorMessage: string;
 
 
   constructor(private placeService: PlaceService) {
@@ -33,29 +33,29 @@ export class HomeComponent implements OnInit {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = [
       {
-        headerName: "Sr.",
+        headerName: 'Sr.',
         valueGetter: 'node.id',
       },
       {
-        headerName: "Name",
-        field: "name",
+        headerName: 'Name',
+        field: 'name',
       },
       {
-        headerName: "Type",
-        field: "type",
+        headerName: 'Type',
+        field: 'type',
       },
       {
-        headerName: "Address",
-        field: "address",
+        headerName: 'Address',
+        field: 'address',
       },
       {
-        headerName: "Telephone Number",
-        field: "telephoneNo",
+        headerName: 'Telephone Number',
+        field: 'telephoneNo',
       },
       {
-        headerName: "Favourite",
-        field: "isFavourite",
-        cellRenderer: "FavouritComponent",
+        headerName: 'Favourite',
+        field: 'isFavourite',
+        cellRenderer: 'FavouritComponent',
       },
 
 
@@ -69,9 +69,9 @@ export class HomeComponent implements OnInit {
 
   onGridReady() {
     this.gridOptions.api.sizeColumnsToFit();
-    window.addEventListener("resize", this.onWindowResize.bind(this));
+    window.addEventListener('resize', this.onWindowResize.bind(this));
 
-    //his.getAllPlaces();
+    this.getAllPlaces();
   }
 
   onWindowResize() {
@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit {
   getAllPlaces() {
     this.placeService.getAllPlaces().subscribe((places) => {
       this.gridOptions.api.setRowData(places);
-    })
+    });
   }
 
   addPlace() {
@@ -112,40 +112,45 @@ export class HomeComponent implements OnInit {
   }
 
   markOrUnMarkPlaceAsFavourite(index, isFavourite) {
-    let rowNode = this.gridOptions.api.getRowNode(index);
-    let place: Place = rowNode.data;
+    const rowNode = this.gridOptions.api.getRowNode(index);
+    const place: Place = rowNode.data;
     place.isFavourite = isFavourite;
     rowNode.setData(place);
 
-    this.placeService.setIsFavourite({ placeId: place._id, isFavourite: isFavourite }).subscribe((place) => {
+    this.placeService.setIsFavourite({ placeId: place._id, isFavourite: isFavourite }).subscribe(() => {
     }, (err: any) => {
     });
   }
 
   search(searchInput) {
-    if(!searchInput.value) return;
+    if (!searchInput.value) { return; }
 
     this.placeService.searchPlaces({ searchText: searchInput.value }).subscribe((places) => {
       this.gridOptions.api.setRowData(places);
-    })
+    });
   }
 
   showAllPlaces() {
-    var favouritePlacesFilter = this.gridOptions.api.getFilterInstance("isFavourite");
+    const favouritePlacesFilter = this.gridOptions.api.getFilterInstance('isFavourite');
     favouritePlacesFilter.setModel(null);
     this.gridOptions.api.onFilterChanged();
   }
 
   showFavouritePlaces() {
-    var favouritePlacesFilter = this.gridOptions.api.getFilterInstance("isFavourite");
+    const favouritePlacesFilter = this.gridOptions.api.getFilterInstance('isFavourite');
     favouritePlacesFilter.setModel({
-      type: "equals",
+      type: 'equals',
       filter: true,
     });
     this.gridOptions.api.onFilterChanged();
   }
   clearSearch(searchInput) {
-    if(!searchInput.value)
+    if (!searchInput.value) {
       this.getAllPlaces();
+    }
+  }
+
+  onPlaceSelected(place: Place) {
+
   }
 }

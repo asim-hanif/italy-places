@@ -14,14 +14,18 @@ import { AuthenticationService } from './services/authentication.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { FavouritComponent } from './favourit/favourit.component';
 import { MapComponent } from './map/map.component';
-import { BingMapServiceProviderFactory, GoogleMapServiceProviderFactory } from './services/utils.service';
+import { BingMapServiceProviderFactory, GoogleMapServiceProviderFactory, UtilsService } from './services/utils.service';
+import { SearchMapService, BingSearchMapServiceProviderFactory,
+   GoogleSearchMapServiceProviderFactory } from './services/search-map.service';
+import { SearchMapComponent } from './search-map/search-map.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'home', component: HomeComponent , canActivate: [AuthGuardService]},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'map', component: MapComponent },
+  { path: 'searchmap', component: SearchMapComponent },
 ];
 
 const useBing: boolean = false;
@@ -42,14 +46,19 @@ const useBing: boolean = false;
     RegisterComponent,
     HomeComponent,
     FavouritComponent,
-    MapComponent
+    MapComponent,
+    SearchMapComponent
   ],
   providers: [
     AuthenticationService,
     AuthGuardService,
     {
-      provide: MapAPILoader, deps: [], useFactory: useBing ? BingMapServiceProviderFactory : GoogleMapServiceProviderFactory
-    }
+      provide: MapAPILoader, deps: [UtilsService], useFactory: useBing ? BingMapServiceProviderFactory : GoogleMapServiceProviderFactory
+    },
+    {
+      provide: SearchMapService, deps: [UtilsService],
+      useFactory: useBing ? BingSearchMapServiceProviderFactory : GoogleSearchMapServiceProviderFactory
+    },
   ],
   bootstrap: [AppComponent]
 })

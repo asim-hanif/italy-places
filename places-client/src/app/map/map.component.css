@@ -1,3 +1,15 @@
 .map-container { height: 100%; }
 .map-content { display: block; }
 .description { margin-top: 10px; padding: 15px; background-color: bisque; border: 1px solid orange; }
+
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 300px;
+}

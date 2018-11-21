@@ -10,18 +10,19 @@ import { BingMapAPILoaderConfig, BingMapAPILoader, WindowRef, DocumentRef, Googl
 })
 export class UtilsService {
   private host: string;
-  constructor(private http: HttpClient , private authService: AuthenticationService) {
+  constructor(private http: HttpClient, private authService: AuthenticationService) {
     this.host = 'http://localhost:3000';
   }
 
-  public request(method: 'post'|'get', type: string , data = {}): Observable<any> {
+  public request(method: 'post' | 'get', type: string, data = {}): Observable<any> {
 
-      return this.http.request(method ,`${this.host}/api/${type}`, {body: data, headers: { Authorization: `Bearer ${this.authService.getToken()}` }}).pipe(
-        map((data: TokenResponse) => {
-          if (data.token) {
-            this.authService.saveToken(data.token);
+    return this.http.request(method, `${this.host}/api/${type}`,
+      { body: data, headers: { Authorization: `Bearer ${this.authService.getToken()}` } }).pipe(
+        map((tokenResponse: TokenResponse) => {
+          if (tokenResponse.token) {
+            this.authService.saveToken(tokenResponse.token);
           }
-          return data;
+          return tokenResponse;
         })
       );
   }
@@ -39,7 +40,7 @@ export interface TokenResponse {
   token: string;
 }
 
-export function GoogleMapServiceProviderFactory(){
+export function GoogleMapServiceProviderFactory() {
   const gc: GoogleMapAPILoaderConfig = new GoogleMapAPILoaderConfig();
   gc.apiKey = 'AIzaSyDe2QqXrbtaORvL-I0WHpiI72HxtfTz5Zo';
   return new GoogleMapAPILoader(gc, new WindowRef(), new DocumentRef());

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { IBox, IMapOptions, MarkerTypeId, MapAPILoader } from "angular-maps";
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { IBox, IMapOptions, MarkerTypeId, IMarkerIconInfo, MapComponent as AmMapComponent } from "angular-maps";
+import { SearchMapService } from '../services/search-map.service';
 
 
 @Component({
@@ -14,20 +15,23 @@ export class MapComponent implements OnInit {
     disableStreetside: false,
     navigationBarMode: 1
   };
-  box: IBox = {
-    maxLatitude: 32,
-    maxLongitude: -92,
-    minLatitude: 29,
-    minLongitude: -98
-  };
+
   latitude: any = 30.375321;
   logitude: any = 69.345116;
 
-  constructor() { }
+  iconInfo: IMarkerIconInfo = {
+    markerType: MarkerTypeId.ScaledImageMarker,
+    url: '../../assets/marker.png',
+    scale: 0.02,
+    markerOffsetRatio: { x: 0.5, y: 1 }
+  };
+
+  @ViewChild('map') amMap: AmMapComponent;
+
+  constructor(searchMapService: SearchMapService) { }
 
   ngOnInit() {
-
-    navigator.geolocation.getCurrentPosition(this.setLatLong.bind(this), undefined , {
+    navigator.geolocation.getCurrentPosition(this.setLatLong.bind(this), undefined, {
       enableHighAccuracy: true,
       timeout: 5000,
       maximumAge: 0
