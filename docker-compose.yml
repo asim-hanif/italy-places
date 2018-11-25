@@ -1,0 +1,15 @@
+version: '3' # specify docker-compose version
+
+# Define the services/containers to be run
+services:
+  placeClient: # name of the first service
+    build: asimhanif23250/places-client:dev # specify the directory of the Dockerfile
+    ports:
+      - "4200:4200" # specify port forewarding
+
+  placesServer: #name of the second service
+    build: asimhanif23250/places-server:dev # specify the directory of the Dockerfile
+    ports:
+      - "3000:3000" #specify ports forewarding
+
+
