@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { IBox, IMapOptions, MarkerTypeId, IMarkerIconInfo, MapComponent as AmMapComponent } from "angular-maps";
-import { SearchMapService } from '../services/search-map.service';
+import { SearchMapService } from '../search-map.service';
 
 
 @Component({
@@ -15,9 +15,11 @@ export class MapComponent implements OnInit {
     disableStreetside: false,
     navigationBarMode: 1
   };
-
+  
+  @Input()
   latitude: any = 30.375321;
-  logitude: any = 69.345116;
+  @Input()
+  longitude: any = 69.345116;
 
   iconInfo: IMarkerIconInfo = {
     markerType: MarkerTypeId.ScaledImageMarker,
@@ -40,6 +42,6 @@ export class MapComponent implements OnInit {
 
   setLatLong(position) {
     this.latitude = position.coords.latitude;
-    this.logitude = position.coords.longitude;
+    this.longitude = position.coords.longitude;
   }
 }

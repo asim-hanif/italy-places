@@ -1,0 +1,6 @@
+<div class="dropdown" [ngClass]="{'open': showSearchResults}">
+  <input type="text" class="form-control" [ngClass]="{'loading': showLoaderGif}" placeholder="Search map" #searchText (input)="searchDebounced(searchText.value)">
+  <ul *ngIf="searchResults.length > 0" class="dropdown-menu">
+    <li *ngFor="let searchResult of searchResults"><a (click)="getPlaceDetails(searchResult.placeDetailId)">{{searchResult.name}}</a></li>
+  </ul>
+</div>

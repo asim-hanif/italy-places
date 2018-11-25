@@ -7,7 +7,8 @@
       <ul class="nav navbar-nav navbar-right">
         <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Sign in</a></li>
         <li *ngIf="auth.isLoggedIn()"><a routerLink="/home">{{ auth.getUserDetails()?.name }}</a></li>
-        <li *ngIf="auth.isLoggedIn()"><a (click)="auth.logout()">Logout</a></li>
+        <li *ngIf="auth.isLoggedIn()"><a style="cursor:pointer; color: brown; font-size: larger;" (click)="changeMapSetting()">{{useBing ? 'Use Google Maps' : 'Use Bing Maps'}}</a></li>
+        <li *ngIf="auth.isLoggedIn()"><a style="cursor:pointer;" (click)="auth.logout()">Logout</a></li>
       </ul>
     </div>
   </div>

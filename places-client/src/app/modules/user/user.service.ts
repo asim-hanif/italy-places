@@ -1,19 +1,17 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { UtilsService, TokenPayload } from './utils.service';
+import { UtilsService, TokenPayload } from '../../services/utils.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserService {
 
   constructor(private utilService: UtilsService) { }
 
   public register(user: TokenPayload): Observable<any> {    
-    return this.utilService.request('post', 'user/register', user);
+    return this.utilService.apiRequest('post', 'user/register', user);
   }
 
   public login(user: TokenPayload): Observable<any> {
-    return this.utilService.request('post', 'user/login', user);
+    return this.utilService.apiRequest('post', 'user/login', user);
   }
 }

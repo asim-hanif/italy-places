@@ -18,6 +18,7 @@ var authFilter = (callBack) => {
 
 var placesController = require('../controllers/placesController');
 var authController = require('../controllers/userController');
+var requestController = require('../controllers/requestController');
 
 // place
 router.post('/place/addNewPlace', auth, authFilter(placesController.addNewPlace));
@@ -25,6 +26,9 @@ router.post('/place/setIsFavourite', auth, authFilter(placesController.setIsFavo
 router.get('/place/getAllFavouritePlaces', auth, authFilter(placesController.getAllFavouritePlaces));
 router.get('/place/getAllPlaces', auth, authFilter(placesController.getAllPlaces));
 router.post('/place/searchPlaces', auth, authFilter(placesController.searchPlaces));
+
+//
+router.post('/request/jsonRequest', auth, authFilter(requestController.jsonRequest));
 
 // authentication
 router.post('/user/register', authController.register);

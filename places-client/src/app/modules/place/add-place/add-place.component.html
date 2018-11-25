@@ -1,0 +1,30 @@
+<form class="form-horizontal" (submit)="addPlace()" [formGroup]="addPlaceForm">
+  <div class="form-group">
+    <app-search-map (placeSelected)="onPlaceSelected($event)"></app-search-map>
+  </div>
+  <br/>
+  <div class="form-group" [ngClass]="{'has-error': isFieldNotValid(addPlaceForm.get('name')) }">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" name="name" placeholder="Enter name of the place" formControlName="name">
+  </div>
+  <div class="form-group" [ngClass]="{'has-error': isFieldNotValid(addPlaceForm.get('type')) }">
+    <label for="email">Type</label>
+    <input type="text" class="form-control" name="type" placeholder="Enter type of place i.e restaurant / theater / museum, etc "
+      formControlName="type">
+  </div>
+  <div class="form-group" [ngClass]="{'has-error': isFieldNotValid(addPlaceForm.get('telephoneNo')) }">
+    <label for="telephone">Telephone</label>
+    <input type="text" class="form-control" name="telephoneNo" placeholder="Telephone Number" formControlName="telephoneNo">
+  </div>
+  <div class="form-group" [ngClass]="{'has-error': isFieldNotValid(addPlaceForm.get('address')) }">
+    <label for="address">Address</label>
+    <input type="text" class="form-control" name="address" placeholder="Address" formControlName="address">
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary col-md-12 col-lg-12 col-sm-12 col-xs-12">Add</button>
+  </div>
+  <div class="form-group">
+    <app-map [latitude]="latitude" [longitude]="longitude"></app-map>
+  </div>
+</form>
+<span class="text-danger" *ngIf="errorMessage"><strong>{{errorMessage}}</strong></span>

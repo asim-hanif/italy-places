@@ -11,7 +11,7 @@ function addNewPlace(req, res) {
     place.address = address;
     place.telephoneNo = telephoneNo;
     place.type = type;
-    place.isFavourite = false;
+    place.isFavourite = true;
 
     place.save((err, data) => {
         if (!err)

@@ -14,9 +14,9 @@ export class UtilsService {
     this.host = 'http://localhost:3000';
   }
 
-  public request(method: 'post' | 'get', type: string, data = {}): Observable<any> {
+  public apiRequest(method: 'post' | 'get', action: string, data = {}): Observable<any> {
 
-    return this.http.request(method, `${this.host}/api/${type}`,
+    return this.http.request(method, `${this.host}/api/${action}`,
       { body: data, headers: { Authorization: `Bearer ${this.authService.getToken()}` } }).pipe(
         map((tokenResponse: TokenResponse) => {
           if (tokenResponse.token) {
@@ -26,6 +26,7 @@ export class UtilsService {
         })
       );
   }
+  
 }
 
 
@@ -50,4 +51,13 @@ export function BingMapServiceProviderFactory() {
   const bc: BingMapAPILoaderConfig = new BingMapAPILoaderConfig();
   bc.apiKey = 'Ah6XdONUHP74SCTcqdIXOyGqu_5eSOgIVy3sSi8Pt56w6GfpHggrB_MlErbioB0N';
   return new BingMapAPILoader(bc, new WindowRef(), new DocumentRef());
+}
+
+export function debounce(callback, time) {
+  let timeout;
+  return function (...args) {
+    if (timeout)
+      clearTimeout(timeout);
+    timeout = setTimeout(callback.bind(null, ...args), time);
+  }
 }
