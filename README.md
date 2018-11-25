@@ -14,10 +14,10 @@ User stories catered in this application are:
 - User should be able to remove individual places from their favorites
 
 ## Docker Compose
-Docker images for client and server applications are available at [docker hub](https://hub.docker.com/r/asimhanif23250). You can run the application locally without ever getting the source code using docker compose
+Docker images for client and server applications are available at [Docker Hub](https://hub.docker.com/r/asimhanif23250). You can run the application locally without ever getting the source code using docker compose
 
-- Get docker-compose.yml file from this repository. 
-- In terminal run `sudo docker-compose up` (this will download the docker images for client and server and run those images).
+- Get [docker-compose.yml](https://github.com/asimhanif23250/italy-places/blob/master/docker-compose.yml) file. 
+- In terminal run `sudo docker-compose up` (this will download and run the docker images for client and server).
 - After the completion of obove command client and server are accessable at `http://localhost:4200` and `http://localhost:3000` respectively.
 
 ## Setup Dev Server
