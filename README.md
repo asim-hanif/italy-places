@@ -29,4 +29,4 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ### PlacesServer
 
-Run `node app.js` for a dev server. Sever will start listening on port 3000
+Run `node app.js` for a dev server. Sever will start listening on port `3000`
